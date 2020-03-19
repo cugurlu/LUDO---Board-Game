@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<SCRIPT LANGUAGE="JavaScript">
+    function getCookieVal(offset) {
+        var endstr = document.cookie.indexOf(";", offset);
+        if (endstr == -1)
+            endstr = document.cookie.length;
+        return unescape(document.cookie.substring(offset, endstr));
+    }
+    function GetCookie(name) {
+        var arg = name + "=";
+        var alen = arg.length;
+        var clen = document.cookie.length;
+        var i = 0;
+        while (i < clen) {
+            var j = i + alen;
+            if (document.cookie.substring(i, j) == arg)
+                return getCookieVal(j);
+            i = document.cookie.indexOf(" ", i) + 1;
+            if (i == 0)
+                break;
+        }
+        return null;
+    }
+    function SetCookie(name, value) {
+        var argv = SetCookie.arguments;
+        var argc = SetCookie.arguments.length;
+        var expires = (2 < argc) ? argv[2] : null;
+        var path = (3 < argc) ? argv[3] : null;
+        var domain = (4 < argc) ? argv[4] : null;
+        var secure = (5 < argc) ? argv[5] : false;
+        document.cookie = name + "=" + escape(value) +
+            ((expires == null) ? "" : ("; expires=" + expires.toGMTString())) +
+            ((path == null) ? "" : ("; path=" + path)) +
+            ((domain == null) ? "" : ("; domain=" + domain)) +
+            ((secure == true) ? "; secure" : "");
+    }
+    function DisplayInfo() {
+        var expdate = new Date();
+        var visit;
+        expdate.setTime(expdate.getTime() + (24 * 60 * 60 * 1000 * 365));
+        if (!(visit = GetCookie("visit")))
+            visit = 0;
+        visit++;
+        SetCookie("visit", visit, expdate, "/", null, false);
+        var message = "Welcome!";
+        alert("\n" + "Your browser has visited this page " + visit + " time(s)." + "\n" + message);
+    }
+    function ResetCounts() {
+        var expdate = new Date();
+        expdate.setTime(expdate.getTime() + (24 * 60 * 60 * 1000 * 365));
+        visit = 0;
+        SetCookie("visit", visit, expdate, "/", null, false);
+        history.go(0);
+    }
+    window.onload = DisplayInfo
+</Script>
+
+<html>
+
+<head>
+    <link href="ludo.css" type="text/css" rel="stylesheet">
+    <title class="title"> LUDO </title>
+
+</head>
+
+<body>
+    <header>
+        <span style='color: red '>L</span>
+        <span style='color: green '>U</span>
+        <span style='color: yellow'>D</span>
+        <span style='color: blue '>O</span>
+    </header>
+    <span class="button1">
+        <form action="/start" method="get">
+            <button type="submit">START!</button>
+        </form>
+    </span>
+    <div class="styling">
+        <div class="left"><img width="130" src="green.png" alt="an image of a green dice"></div>
+        <div class="center">
+            <p>by C&P</p>
+        </div>
+        <div class="right"><img width="200" src="red.png" alt="an image of a red&blue dice">
+        </div>
+    </div>
+    <div class="TheData">
+        <div class="Headers">Statistics</div>
+        <p>*Number of users have started a game:</p>
+        <p>=>....</p>
+        <p>*Number of aborted games:</p>
+        <p>=>....</p>
+        <p>*Number of completed games:</p>
+        <p>=>....</p>
+    </div>
+    <div class="How2">
+        <div class="Headers">How to play</div>
+        <p> => Move all your pieces around the board once, then move up the route of your color and finally arrive at the
+            arrow-shaped area in the middle. The following are the rules:</p>
+        <p> => You need to roll a 6 to move a piece to the starting square; if you do; you will be granted an extra roll</p>
+        <p> => A square can only hold one piece. If your piece moves to a square currently hold occupied by an opponent
+            piece, that opponent piece will be knocked off and it must start over </p>
+        <p> => When a piece is moving to the destination, en exact throw is reguired</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>LUDO</title>
+</head>
+<style>
+    #dice {
+        height: 150px;
+        width: 150px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    body {
+        color: white;
+        background-color: black;
+        margin: 40px;
+    }
+
+    h3 {
+        color: black;
+        background-color: yellow;
+        border: 2px;
+        font-family: 'Georgia', serif;
+        width: 170px;
+        font-size: 25px;
+        text-align: center;
+    }
+
+    table.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    td {
+        text-align: center;
+        vertical-align: middle;
+        font-size: 30px;
+    }
+
+    button {
+        color: black;
+        background-color: #00BFFF;
+        border: 2px solid #00BFFF;
+        font-family: 'Georgia', serif;
+        width: 120px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    button:hover {
+        background-color: grey;
+        color: white;
+    }
+
+    .pawns {
+        width: 25px;
+        height: 25px;
+        border-radius: 20px;
+        position: absolute;
+    }
+</style>
+
+<body>
+
+    <table class="center">
+        <tr>
+            <td>
+                <div class="players">
+                    <h3>PLAYER 4</h3>
+                </div>
+            </td>
+            <td>
+                <p>
+                    <span style='color: red '>L</span>
+                    <span style='color: green '>U</span>
+                    <span style='color: yellow'>D</span>
+                    <span style='color: blue '>O</span>
+                </p>
+            </td>
+            <td>
+                <div class="players">
+                    <h3>PLAYER 1</h3>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="dice" onclick="randomDice()" style="background-image:url(dice.gif);background-size:contain; width:150px;height:150px; float:center;"></div>
+                <p id="playerType"></p>
+                <button onclick="toggleFullScreen()">Click to toggle fullscreen</button>
+            </td>
+            <td><img width="450" src="ludo_board.png" alt="an image of a game board"></td>
+            <!-- red pawns-->
+            <div class="pawns" id="0_0" style="background-color:red;border: 2px solid black;top:156px;left:927px;"></div>
+            <div class="pawns" id="0_1" style="background-color:red;border: 2px solid black;top:156px;left:967px;"></div>
+            <div class="pawns" id="0_2" style="background-color:red;border: 2px solid black;top:196px;left:927px;"></div>
+            <div class="pawns" id="0_3" style="background-color:red;border: 2px solid black;top:196px;left:967px;"></div>
+
+            <!-- green pawns-->
+            <div class="pawns" id="1_0" style="background-color:lime;border: 2px solid black;top:511px;left:927px;"></div>
+            <div class="pawns" id="1_1" style="background-color:lime;border: 2px solid black;top:511px;left:967px;"></div>
+            <div class="pawns" id="1_2" style="background-color:lime;border: 2px solid black;top:551px;left:927px;"></div>
+            <div class="pawns" id="1_3" style="background-color:lime;border: 2px solid black;top:551px;left:967px;"></div>
+
+            <!-- yellow pawns-->
+            <div class="pawns" id="2_0" style="background-color:yellow;border: 2px solid black;top:511px;left:572px;"></div>
+            <div class="pawns" id="2_1" style="background-color:yellow;border: 2px solid black;top:511px;left:612px;"></div>
+            <div class="pawns" id="2_2" style="background-color:yellow;border: 2px solid black;top:551px;left:572px;"></div>
+            <div class="pawns" id="2_3" style="background-color:yellow;border: 2px solid black;top:551px;left:612px;"></div>
+
+            <!-- blue pawns-->
+            <div class="pawns" id="3_0" style="background-color:blue;border: 2px solid black;top:156px;left:572px;"></div>
+            <div class="pawns" id="3_1" style="background-color:blue;border: 2px solid black;top:156px;left:612px;"></div>
+            <div class="pawns" id="3_2" style="background-color:blue;border: 2px solid black;top:196px;left:572px;"></div>
+            <div class="pawns" id="3_3" style="background-color:blue;border: 2px solid black;top:196px;left:612px;"></div>
+
+            <td>
+                <h4 id="text1">It`s </h4>
+                <h4 id="player"></h4>
+                <h4 id="text2">'s turn</h4>
+                <button id="quitButton"> QUIT </button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="players">
+                    <h3>PLAYER 3</h3>
+                </div>
+            </td>
+            <td>
+                <p id="error" style="float:center;"></p>
+                <div id="status">
+                    <span id="statusbar"></span>
+                </div>
+            </td>
+            <td>
+                <div class="players">
+                    <h3>PLAYER 2</h3>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <script>
+        function toggleFullScreen() {
+            if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+                (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+                if (document.documentElement.requestFullScreen) {
+                    document.documentElement.requestFullScreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullScreen) {
+                    document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+            } else {
+                if (document.cancelFullScreen) {
+                    document.cancelFullScreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                }
+            }
+        }
+        if (window.innerWidth < 4000) {
+            alert("Your screen resolution is not sufficient");
+        }
+    </script>
+
+    <script src="javascripts/config.js"></script>
+    <script src="javascripts/statuses.js"></script>
+    <script src="javascripts/messages.js"></script>
+    <script src="javascripts/ui-right.js"></script>
+    <script src="javascripts/interactions.js"></script>
+</body>
+
+</html>
